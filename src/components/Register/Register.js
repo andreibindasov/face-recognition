@@ -1,15 +1,23 @@
 import React from 'react';
 
-import './Signin.css';
+import './Register.css';
 
 
-function Signin ({ onRouteChange }) {
+function Register ({ onRouteChange }) {
     return (
-      <article id="#article" class="br3 ba  b--black-10 mv3 w-100 w-50-m w-25-l mw6 shadow-3 center">
+      <article class="br3 ba  b--black-10 mv3 w-100 w-50-m w-25-l mw6 shadow-3 center">
         <main className="pa4 black-80">
             <form className="measure">
             <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                <legend className="f1 fw6 ph0 mh0">Sign In</legend>
+                <legend className="f1 fw6 ph0 mh0">Register</legend>
+                
+                <div className="mt3">
+                    <label className="db fw6 lh-copy f4" for="name">Name</label>
+                    <input 
+                        className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
+                        type="text" name="name"  id="name" />
+                </div>
+                
                 <div className="mt3">
                     <label className="db fw6 lh-copy f4" for="email-address">Email</label>
                     <input 
@@ -29,16 +37,11 @@ function Signin ({ onRouteChange }) {
                     className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f4 dib" 
                     type="submit" value="Sign in" />
             </div>
-            <div className="lh-copy mt3">
-                <p 
-                    onClick={()=>onRouteChange('register')}
-                    className="f4 link dim black db pointer grow">Register
-                </p>
-            </div>
+            
             </form>
         </main>        
       </article>  
     )
 }
 
-export default Signin;
+export default Register;
