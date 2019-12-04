@@ -1,0 +1,30 @@
+/* font-family: 'Ubuntu', sans-serif;
+font-family: 'Yanone Kaffeesatz', sans-serif;
+font-family: 'Wallpoet', cursive;
+font-family: 'Rajdhani', sans-serif;
+font-family: 'Orbitron', sans-serif;
+font-family: 'Special Elite', cursive; */
+
+.App {
+  font-family: 'Special Elite', cursive;
+  color: cornsilk;
+  text-shadow: 3px 3px 6px rgba(0,0,0, 0.3);
+  text-align: center;
+  
+  
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+}
+
