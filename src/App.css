@@ -10,6 +10,9 @@ font-family: 'Special Elite', cursive; */
   color: cornsilk;
   text-shadow: 3px 3px 6px rgba(0,0,0, 0.3);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   
   
 }

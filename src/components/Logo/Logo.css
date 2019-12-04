@@ -1,5 +1,11 @@
 .Tilt {
     background: linear-gradient(60deg, #17727a 0%, #f7f774 100%);
+    opacity: .45;
+    transition: all .6s;
+}
+.Tilt:hover {
+    background: linear-gradient(60deg, #17727a 0%, #f7f774 100%);
+    opacity: .9;
 }
 
 .logoImg {

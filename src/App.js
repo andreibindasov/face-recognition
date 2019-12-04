@@ -11,6 +11,7 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Logo from './components/Logo/Logo';
 import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
+import Signin from './components/Signin/Signin';
 
 
 const app = new Clarifai.App({
@@ -75,6 +76,7 @@ export default class App extends React.Component {
         
         <Particles className='particles' params={particlesOptions} />    
         <Navigation />
+        <Signin />
         <Logo />
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
