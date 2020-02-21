@@ -2,6 +2,7 @@
     margin-top: 15px;
     width: 45%;
     position: relative;
+    border-radius: 9px;
 }
 
 .facesImg__Img {
@@ -21,3 +22,4 @@
     justify-content: center;
     cursor: pointer;
 }
+

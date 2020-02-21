@@ -1,11 +1,12 @@
 import React from 'react';
+
 import './Rank.css';
 
 
 function Rank () {
     return (
         <div className='rank'>
-            <div className=''>
+            <div className='white f3'>
                 {'User, your current rank is...'}
             </div>
             <div className=''>

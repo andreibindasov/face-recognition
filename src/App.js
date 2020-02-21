@@ -11,8 +11,8 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Logo from './components/Logo/Logo';
 import Navigation from './components/Navigation/Navigation';
 import Rank from './components/Rank/Rank';
-import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
+import Signin from './components/Signin/Signin';
 
 
 const app = new Clarifai.App({
@@ -22,10 +22,10 @@ const app = new Clarifai.App({
 const particlesOptions = {
   particles: {
     number: {
-      value: 120,
+      value: 240,
       density: {
         enable: true,
-        value_area: 600
+        value_area: 800
       }
     }
   }
@@ -37,11 +37,13 @@ export default class App extends React.Component {
     input: '',
     imageUrl: '',
     box: {}, 
-    route: 'signin'
+    route: 'signin',
+    isSignedIn: false
   }
 
   calculateFaceLocation=(_data_)=>{
     const clarifaiFace = _data_.outputs[0].data.regions[0].region_info.bounding_box;
+   
     const getImage = document.getElementById('imageDetected');
     const width = Number(getImage.width);
     const height = Number(getImage.height);
@@ -49,7 +51,8 @@ export default class App extends React.Component {
       leftCol: clarifaiFace.left_col * width,
       topRow: clarifaiFace.top_row * height,
       rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height)
+      bottomRow: height - (clarifaiFace.bottom_row * height),
+      
 
     }
   }
@@ -66,13 +69,18 @@ export default class App extends React.Component {
   onSubmit=()=>{
     this.setState({imageUrl: this.state.input});
     app.models.predict(
-      Clarifai.FACE_DETECT_MODEL, 
+      "a403429f2ddf4b49b307e318f00e528b", 
       this.state.input)
       .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
       .catch(err => console.log(err)); 
   }
 
   onRouteChange = (route) =>{
+    if (route==='signout'){
+      this.setState({isSignedIn:false})
+    } else if (route==='home'){
+      this.setState({isSignedIn:true})
+    }
     this.setState({route: route});
   }
 
@@ -81,13 +89,13 @@ export default class App extends React.Component {
       <div className="App">
         
         <Particles className='particles' params={particlesOptions} />    
-        <Navigation onRouteChange={this.onRouteChange} />
+        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
         { this.state.route==='home' ?
             <div>
               <Logo />
               <Rank />
               <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
-              <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+              { this.state.imageUrl &&  <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} /> }
             </div>
           : (
               this.state.route==='signin' ?
