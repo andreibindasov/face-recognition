@@ -17,7 +17,7 @@ const database = {
             id: '123',
             name: 'John',
             email: 'johndoe@gmail.com',
-            password: 'cookies',
+            
             entries: 0,
             joined: new Date()
         },
@@ -25,7 +25,7 @@ const database = {
             id: '1234',
             name: 'Mary',
             email: 'marypoppins@gmail.com',
-            password: 'pretzels',
+           
             entries: 0,
             joined: new Date()
         }
@@ -40,17 +40,80 @@ const database = {
 }
 
 app.get('/', (req,res,next)=>{
-    res.send("GET ME")
+    res.send(database.users)
 });
 
 app.post('/signin', (req, res, next)=>{
     // res.json('running at port 3030 SIGN IN');
+    bcrypt.compare('dude', '$2b$10$DcRgcGE1FybowppE.qTUwO0y3jU9r2lLVGMlexqiF.aFn4j0LWdzu', 
+    function(err, res){
+        console.log('1-' + res);
+    });
+    bcrypt.compare('dadaaa', '$2b$10$DcRgcGE1FybowppE.qTUwO0y3jU9r2lLVGMlexqiF.aFn4j0LWdzu', 
+    function(err, res){
+        console.log('2-' + res);
+    })
+    
     if (req.body.email === database.users[0].email && 
         req.body.password === database.users[0].password){
             res.json("SUCCESS");
         } else {
             res.status(400).json("ERROR!!!")
         }
+});
+
+app.post('/register', (req, res)=> {
+    const { email, name, password } = req.body;
+    bcrypt.hash(password, saltRounds, function (err, hash){
+        console.log(hash);
+        if (!err) {
+            database.users.push({
+                id: '1233334',
+                name: name,
+                email: email,
+                entries: 0,
+                joined: new Date()
+            });
+            database.login.push({
+                id: '1233334',
+                email: email,
+                hash: hash
+            });
+        }
+    });
+    
+    res.json(database.login[database.login.length-1]);
+            
+    
+});
+
+app.get('/profile/:id', (req,res)=>{
+    const { id } = req.params;
+    let found =false;
+    database.users.forEach(user => {
+        if (user.id===id){
+            found=true;
+            return res.json(user);
+        } 
+        
+        if (!found) {res.status(400).send("NOT FOUND")};
+        
+    })
+});
+
+app.put('/image', (req,res)=>{
+    const { id } = req.body;
+    let found =false;
+    database.users.forEach(user => {
+        if (user.id===id){
+            found=true;
+            user.entries++;
+            return res.json(user.entries);
+        } 
+        
+        if (!found) {res.status(400).send("NOT FOUND")};
+        
+    })   
 })
 
 // app.get('', (req, res, next)=>{

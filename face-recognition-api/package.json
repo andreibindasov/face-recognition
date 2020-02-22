@@ -15,7 +15,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^4.0.0",
     "nodemon": "^2.0.2"
   }
 }
