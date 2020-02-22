@@ -16,7 +16,8 @@ import Signin from './components/Signin/Signin';
 
 
 const app = new Clarifai.App({
-  apiKey: '6ba5f8003f6c49f19815c5eb33c82c10'
+  // apiKey: '6ba5f8003f6c49f19815c5eb33c82c10'
+  apiKey:'0738174cda9f4394a3a585cc94e838d8'
 });
 
 const particlesOptions = {
@@ -38,12 +39,39 @@ export default class App extends React.Component {
     imageUrl: '',
     box: {}, 
     route: 'signin',
-    isSignedIn: false
+    isSignedIn: false,
+    
+    user: {
+      id:'',
+      name:'',
+      email:'',
+      entries: 0,
+      joined:''
+    }
   }
+
+  loadUser = (data) => {
+    this.setState({user: {
+      id:data.id,
+      name:data.name,
+      email:data.email,
+      entries: data.entries,
+      joined:data.joined
+    }})
+  }
+
+// --> HOOK
+  // componentDidMount() {
+  //   fetch('http://localhost:3030')
+  //     .then(res => res.json())
+  //     .then(console.log)
+  // }
+
+
 
   calculateFaceLocation=(_data_)=>{
     const clarifaiFace = _data_.outputs[0].data.regions[0].region_info.bounding_box;
-   
+    // const celeb = _data_.outputs[0].data.regions[0].data.face.identity.concepts[0].name;
     const getImage = document.getElementById('imageDetected');
     const width = Number(getImage.width);
     const height = Number(getImage.height);
@@ -52,7 +80,7 @@ export default class App extends React.Component {
       topRow: clarifaiFace.top_row * height,
       rightCol: width - (clarifaiFace.right_col * width),
       bottomRow: height - (clarifaiFace.bottom_row * height),
-      
+      // name: celeb  
 
     }
   }
@@ -93,15 +121,22 @@ export default class App extends React.Component {
         { this.state.route==='home' ?
             <div>
               <Logo />
-              <Rank />
+              <Rank 
+                name={this.state.user.name}
+                entries={this.state.user.entries}
+              />
               <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
               { this.state.imageUrl &&  <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} /> }
             </div>
           : (
               this.state.route==='signin' ?
-              <Signin onRouteChange={this.onRouteChange} /> 
+              <Signin 
+                loadUser={this.loadUser}
+                onRouteChange={this.onRouteChange} /> 
               :
-              <Register onRouteChange={this.onRouteChange} /> 
+              <Register 
+                loadUser={this.loadUser}
+                onRouteChange={this.onRouteChange} /> 
             )
           
         }

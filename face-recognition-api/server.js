@@ -17,7 +17,7 @@ const database = {
             id: '123',
             name: 'John',
             email: 'johndoe@gmail.com',
-            
+            password:'nhoJ',
             entries: 0,
             joined: new Date()
         },
@@ -25,7 +25,7 @@ const database = {
             id: '1234',
             name: 'Mary',
             email: 'marypoppins@gmail.com',
-           
+            password:'yraM',
             entries: 0,
             joined: new Date()
         }
@@ -56,7 +56,9 @@ app.post('/signin', (req, res, next)=>{
     
     if (req.body.email === database.users[0].email && 
         req.body.password === database.users[0].password){
-            res.json("SUCCESS");
+            // res.json("SUCCESS");
+            console.log(database.users[0]);
+            res.json(database.users[0]);
         } else {
             res.status(400).json("ERROR!!!")
         }
@@ -64,25 +66,33 @@ app.post('/signin', (req, res, next)=>{
 
 app.post('/register', (req, res)=> {
     const { email, name, password } = req.body;
-    bcrypt.hash(password, saltRounds, function (err, hash){
-        console.log(hash);
-        if (!err) {
-            database.users.push({
-                id: '1233334',
-                name: name,
-                email: email,
-                entries: 0,
-                joined: new Date()
-            });
-            database.login.push({
-                id: '1233334',
-                email: email,
-                hash: hash
-            });
-        }
+    // bcrypt.hash(password, saltRounds, function (err, hash){
+    //     console.log(hash);
+    //     if (!err) {
+    //         database.users.push({
+    //             id: '1233334',
+    //             name: name,
+    //             email: email,
+    //             entries: 0,
+    //             joined: new Date()
+    //         });
+    //         database.login.push({
+    //             id: '1233334',
+    //             email: email,
+    //             hash: hash
+    //         });
+    //     }
+    // });
+    database.users.push({
+        id: '1233334',
+        name: name,
+        email: email,
+        entries: 0,
+        joined: new Date()
     });
+    res.json(database.users[database.users.length-1]);
     
-    res.json(database.login[database.login.length-1]);
+    // res.json(database.login[database.login.length-1]);
             
     
 });
