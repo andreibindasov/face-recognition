@@ -32,23 +32,25 @@ const particlesOptions = {
   }
 }
 
+const initState = {
+  input: '',
+  imageUrl: '',
+  box: {}, 
+  route: 'signin',
+  isSignedIn: false,
+  
+  user: {
+    id:'',
+    name:'',
+    email:'',
+    entries: 0,
+    joined:''
+  }
+}
+
 export default class App extends React.Component {
   
-  state = {
-    input: '',
-    imageUrl: '',
-    box: {}, 
-    route: 'signin',
-    isSignedIn: false,
-    
-    user: {
-      id:'',
-      name:'',
-      email:'',
-      entries: 0,
-      joined:''
-    }
-  }
+  state = initState;
 
   loadUser = (data) => {
     this.setState({user: {
@@ -99,13 +101,28 @@ export default class App extends React.Component {
     app.models.predict(
       "a403429f2ddf4b49b307e318f00e528b", 
       this.state.input)
-      .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+      .then(response => {
+        if (response) {
+          fetch('http://localhost:3030/image', {
+            method: 'put',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                id: this.state.user.id
+            })
+        })
+          .then(response => response.json())
+          .then(count=> {
+            this.setState(Object.assign(this.state.user, { entries: count }));
+          })
+      }
+        this.displayFaceBox(this.calculateFaceLocation(response))
+      })
       .catch(err => console.log(err)); 
   }
 
   onRouteChange = (route) =>{
     if (route==='signout'){
-      this.setState({isSignedIn:false})
+      this.setState(initState)
     } else if (route==='home'){
       this.setState({isSignedIn:true})
     }
