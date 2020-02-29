@@ -7,7 +7,7 @@ const Rank = ({name, entries}) => {
     return (
         <div className='rank'>
             <div className='white f3'>
-                {`${name}, your current rank is...`}
+                {`${name.toUpperCase()}, your current score is...`}
             </div>
             <div className=''>
                 {entries}
