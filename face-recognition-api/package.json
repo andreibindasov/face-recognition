@@ -19,7 +19,7 @@
     "url-exists": "^1.0.3"
   },
   "devDependencies": {
-    "bcrypt": "^4.0.0",
+    "bcrypt": "^5.0.0",
     "nodemon": "^2.0.2"
   }
 }
