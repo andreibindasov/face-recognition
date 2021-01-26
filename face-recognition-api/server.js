@@ -22,7 +22,7 @@ const db = require('knex')({
     connection:{
         host:'127.0.0.1',
         user:'postgres',
-        password:'1973BindaS',
+        password:'postgres',
         database: 'smartbrain'
     }
 });
