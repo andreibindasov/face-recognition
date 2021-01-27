@@ -30,7 +30,7 @@ const particlesOptions = {
 const initState = {
   input: '',
   imageUrl: '',
-  box: {}, 
+  boxes: [], 
   route: 'signin',
   isSignedIn: false,
   
@@ -66,24 +66,28 @@ export default class App extends React.Component {
 
 
 
-  calculateFaceLocation=(_data_)=>{
-    const clarifaiFace = _data_.outputs[0].data.regions[0].region_info.bounding_box;
+  calculateFaceLocations=(_data_)=>{
+    return _data_.outputs[0].data.regions.map(face=>{
+      const clarifaiFace = face.region_info.bounding_box
+      const getImage = document.getElementById('imageDetected');
+      const width = Number(getImage.width);
+      const height = Number(getImage.height);
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - (clarifaiFace.right_col * width),
+        bottomRow: height - (clarifaiFace.bottom_row * height)
+      }
+    });
     // const celeb = _data_.outputs[0].data.regions[0].data.face.identity.concepts[0].name;
-    const getImage = document.getElementById('imageDetected');
-    const width = Number(getImage.width);
-    const height = Number(getImage.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height),
+   
       // name: celeb  
 
-    }
+    // }
   }
 
- displayFaceBox = (box) => {
-   this.setState({box: box})
+ displayFaceBoxes = (boxes) => {
+   this.setState({boxes: boxes})
  }
 
   onInputChange=(e)=>{
@@ -119,7 +123,8 @@ export default class App extends React.Component {
             this.setState(Object.assign(this.state.user, { entries: count }));
           })
       }
-        this.displayFaceBox(this.calculateFaceLocation(response))
+        console.log(response)
+        this.displayFaceBoxes(this.calculateFaceLocations(response))
       })
       .catch(err => console.log(err)); 
   }
@@ -147,7 +152,7 @@ export default class App extends React.Component {
                 entries={this.state.user.entries}
               />
               <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
-              { this.state.imageUrl &&  <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} /> }
+              { this.state.imageUrl &&  <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl} /> }
             </div>
           : (
               this.state.route==='signin' ?
