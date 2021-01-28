@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const urlExists = require('url-exists');
 // const saltRounds = 10;
 
@@ -31,7 +31,7 @@ db.select('*').from('users').then(data=>{
     console.log(data);
 });
 
-app.get('/', (req, res)=> { res.send(db.users) })
+app.get('/', (req, res)=> { res.send("HELLOOOOOOOO.....") })
 
 app.post('/signin', (req, res)=> {
     signin.handleSignin(req, res, db, bcrypt)
