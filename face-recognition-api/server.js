@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const urlExists = require('url-exists');
+const morgan = require('morgan')
 // const saltRounds = 10;
 
 const register = require('./controllers/register');
@@ -12,19 +13,28 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+
+console.log('hmmmm???')
+
+app.use(morgan('combined'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(cors());
 
+
+// const db = require('knex')({
+//     client:'pg',
+//     connection:{
+//         host:'127.0.0.1',
+//         user:'postgres',
+//         password:'postgres',
+//         database: 'smartbrain'
+//     }
+// });
 const db = require('knex')({
     client:'pg',
-    connection:{
-        host:'127.0.0.1',
-        user:'postgres',
-        password:'postgres',
-        database: 'smartbrain'
-    }
+    connection:process.env.PROCESS_URI
 });
 
 db.select('*').from('users').then(data=>{

@@ -1,0 +1,43 @@
+version: '3.6'
+
+services:
+  # Backend API
+  face-recognition-api:
+    container_name: backend
+    build: ./
+    command: npm start -- -L
+    working_dir: /usr/src/face-recognition-api
+    
+    environment:
+      POSTGRES_URI: postgres://andrei:secret@localhost:5432/smartbrain-docker
+    links:
+      - postgres  
+    
+    ports:
+       - "3030:3030" 
+    volumes:
+       - ./:/usr/src/face-recognition-api #allows us to access the file system in host system       
+  # Postgres
+  postgres:
+    # container_name: postgres >>> NOT NEEDED >>> CONFLICTS OCCUR
+    environment:
+      POSTGRES_USER: andrei
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: smartbrain-docker
+      POSTGRES_HOST: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+
+       
+
+#  docker-compose build
+#  docker-compose run [container name] !!!!!!!
+# docker-compose up >> WORKS BETTER
+#  docker-compose up --build
+#  docker-compose down
+
+# TO GET IT WORK ON THE BG
+# docker-compose up -d
+# docker-compose exec [service name] bash
+
